@@ -1,0 +1,45 @@
+# Virtual environment
+venv/
+env/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database
+backend/database.db
+
+# Trained model (large binary file)
+backend/models/*.h5
+
+# Uploaded images
+images/
+
+# Dataset images (not tracked; add your own)
+datasets/train/
+datasets/test/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/

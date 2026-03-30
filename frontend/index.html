@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skin Insight – AI Skin Analysis</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Top Navigation Bar ─────────────────────────────────────────────── -->
+  <header class="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">✦</span>
+      <span class="brand-name">Skin Insight</span>
+    </div>
+    <nav class="navbar-actions">
+      <button id="darkModeToggle" class="btn btn-icon" title="Toggle dark mode" aria-label="Toggle dark mode">
+        🌙
+      </button>
+    </nav>
+  </header>
+
+  <!-- ── Hero Banner ────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <h1>AI-Powered Skin Analysis</h1>
+    <p>Capture your face, detect skin conditions, and get personalised product recommendations – all in seconds.</p>
+  </section>
+
+  <!-- ── Registration Modal ─────────────────────────────────────────────── -->
+  <div id="registerModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <h2 id="modalTitle">Welcome to Skin Insight</h2>
+      <p class="modal-subtitle">Enter your details to personalise your experience.</p>
+      <div class="form-group">
+        <label for="userName">Full Name</label>
+        <input type="text" id="userName" placeholder="e.g. Alice Khan" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="userEmail">Email Address</label>
+        <input type="email" id="userEmail" placeholder="alice@example.com" autocomplete="email" />
+      </div>
+      <p id="registerError" class="error-msg" aria-live="polite"></p>
+      <button id="registerBtn" class="btn btn-primary btn-full">Get Started</button>
+      <button id="skipRegisterBtn" class="btn btn-ghost btn-full">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- ── Main Content ────────────────────────────────────────────────────── -->
+  <main class="main-grid">
+
+    <!-- ── Left Panel: Camera ─────────────────────────────────────────── -->
+    <section class="panel camera-panel" aria-label="Camera capture">
+      <div class="panel-header">
+        <h2>📷 Capture Your Skin</h2>
+        <span class="badge" id="cameraStatus">Camera Off</span>
+      </div>
+
+      <div class="video-wrapper">
+        <video id="videoFeed" autoplay playsinline muted></video>
+        <canvas id="snapshotCanvas" style="display:none;"></canvas>
+        <img id="capturedImage" class="captured-preview" alt="Captured skin photo" style="display:none;" />
+        <div class="video-overlay" id="videoOverlay">
+          <span>Click "Start Camera" to begin</span>
+        </div>
+      </div>
+
+      <div class="camera-controls">
+        <button id="startCameraBtn" class="btn btn-primary">▶ Start Camera</button>
+        <button id="captureBtn" class="btn btn-accent" disabled>📸 Capture</button>
+        <button id="retakeBtn" class="btn btn-ghost" style="display:none;">↩ Retake</button>
+      </div>
+
+      <!-- File upload fallback -->
+      <div class="upload-divider"><span>or upload an image</span></div>
+      <label class="file-upload-label" for="fileInput">
+        <span>Choose File</span>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </label>
+
+      <button id="analyseBtn" class="btn btn-primary btn-full" disabled>🔍 Analyse Skin</button>
+
+      <p id="captureError" class="error-msg" aria-live="polite"></p>
+    </section>
+
+    <!-- ── Right Panel: Results ───────────────────────────────────────── -->
+    <section class="panel results-panel" aria-label="Analysis results">
+      <div class="panel-header">
+        <h2>💡 Analysis Results</h2>
+      </div>
+
+      <!-- Placeholder shown before any analysis -->
+      <div id="resultsPlaceholder" class="results-placeholder">
+        <div class="placeholder-icon">🔬</div>
+        <p>Capture or upload an image and click <strong>Analyse Skin</strong> to see results here.</p>
+      </div>
+
+      <!-- Loader shown during API call -->
+      <div id="loader" class="loader" style="display:none;" aria-live="polite" aria-label="Analysing…">
+        <div class="spinner"></div>
+        <p>Analysing your skin…</p>
+      </div>
+
+      <!-- Results shown after a successful prediction -->
+      <div id="resultsContent" style="display:none;">
+
+        <!-- Prediction card -->
+        <div class="result-card prediction-card">
+          <div class="result-label">Detected Condition</div>
+          <div id="predictedClass" class="result-value condition-badge">–</div>
+          <div class="confidence-row">
+            <span class="result-label">Confidence</span>
+            <div class="confidence-bar-wrapper">
+              <div id="confidenceBar" class="confidence-bar" style="width:0%"></div>
+            </div>
+            <span id="confidenceText" class="confidence-text">0%</span>
+          </div>
+        </div>
+
+        <!-- Product recommendations -->
+        <div class="recommendations-section">
+          <h3>🛍️ Recommended Products</h3>
+          <div id="productList" class="product-grid"></div>
+          <div class="total-price-row">
+            <span>Total Price</span>
+            <span id="totalPrice" class="total-price-value">Rs 0</span>
+          </div>
+        </div>
+
+      </div>
+
+      <p id="resultsError" class="error-msg" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>Skin Insight &copy; 2024 &bull; AI-powered skin analysis for educational purposes only.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
