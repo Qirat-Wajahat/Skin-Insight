@@ -64,7 +64,7 @@ def load_dataset(directory: str, subset: str | None = None, validation_split: fl
         kwargs["validation_split"] = validation_split
         kwargs["subset"] = subset
 
-    dataset = tf.keras.preprocessing.image_dataset_from_directory(**kwargs)
+    dataset = tf.keras.utils.image_dataset_from_directory(**kwargs)
 
     # Normalize pixel values from [0, 255] → [0, 1]
     normalization_layer = tf.keras.layers.Rescaling(1.0 / 255)
