@@ -44,7 +44,7 @@ class TestSkinInsightPipeline(unittest.TestCase):
         from backend.create_db import create_tables, seed_products
 
         # Use a real temp file so all connections share the same DB
-        cls._tmp_dir  = tempfile.TemporaryDirectory()
+        cls._tmp_dir  = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         cls._db_file  = os.path.join(cls._tmp_dir.name, "test.db")
 
         app_module.IMAGES_DIR = cls._tmp_dir.name
@@ -52,8 +52,7 @@ class TestSkinInsightPipeline(unittest.TestCase):
 
         with sqlite3.connect(cls._db_file) as conn:
             create_tables(conn)
-            if os.path.exists(TEST_PRODUCTS_CSV):
-                seed_products(conn)
+            seed_products(conn)
 
         app_module.app.config["TESTING"] = True
         cls.client     = app_module.app.test_client()

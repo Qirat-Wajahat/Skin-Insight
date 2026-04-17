@@ -3,18 +3,16 @@ train_model.py
 --------------
 Builds, compiles, trains, and saves a CNN model for skin condition classification.
 
-Skin classes (6):
-    0 – Acne
-    1 – Blackheads
-    2 – Dark Spots
-    3 – Normal
-    4 – Pores
-    5 – Wrinkles
+Skin classes are inferred from `datasets/train/`.
+To enforce a stable class order, generate the dataset folders first:
+
+    python scripts/prepare_dataset.py
 
 Run from the project root:
     python scripts/train_model.py
 """
 
+import json
 import os
 import sys
 
@@ -30,10 +28,10 @@ from preprocess import get_datasets
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 IMAGE_SIZE = (224, 224, 3)   # Height × Width × Channels
-NUM_CLASSES = 6              # Acne, Blackheads, Dark Spots, Normal, Pores, Wrinkles
 EPOCHS = 30                  # Training epochs (increase for better accuracy)
 LEARNING_RATE = 1e-3
 MODEL_SAVE_PATH = os.path.join("backend", "models", "skin_model.h5")
+CLASS_NAMES_SAVE_PATH = os.path.join("backend", "models", "class_names.json")
 
 
 def build_model(input_shape: tuple, num_classes: int) -> keras.Model:
@@ -158,16 +156,25 @@ def plot_history(history: keras.callbacks.History) -> None:
 
 def main():
     # ── 1. Load datasets ────────────────────────────────────────────────────
-    train_ds, val_ds, _ = get_datasets()
+    train_ds, val_ds, _, class_names = get_datasets()
+
+    if not class_names:
+        raise RuntimeError(
+            "No class names inferred from datasets/train. "
+            "Did you run: python scripts/prepare_dataset.py ?"
+        )
+    num_classes = len(class_names)
 
     # ── 2. Build the CNN model ───────────────────────────────────────────────
-    model = build_model(IMAGE_SIZE, NUM_CLASSES)
+    model = build_model(IMAGE_SIZE, num_classes)
     model.summary()
 
     # ── 3. Compile the model ────────────────────────────────────────────────
     compile_model(model, LEARNING_RATE)
 
     # ── 4. Define callbacks ─────────────────────────────────────────────────
+    os.makedirs(os.path.dirname(MODEL_SAVE_PATH), exist_ok=True)
+
     callbacks = [
         # Stop training early if validation loss does not improve for 5 epochs
         keras.callbacks.EarlyStopping(
@@ -196,9 +203,13 @@ def main():
     )
 
     # ── 6. Save the final model ──────────────────────────────────────────────
-    os.makedirs(os.path.dirname(MODEL_SAVE_PATH), exist_ok=True)
     model.save(MODEL_SAVE_PATH)
     print(f"\nModel saved to {MODEL_SAVE_PATH}")
+
+    # Persist class order so inference maps indices correctly.
+    with open(CLASS_NAMES_SAVE_PATH, "w", encoding="utf-8") as f:
+        json.dump(class_names, f, indent=2)
+    print(f"Class names saved to {CLASS_NAMES_SAVE_PATH}: {class_names}")
 
     # ── 7. Plot training history ─────────────────────────────────────────────
     plot_history(history)

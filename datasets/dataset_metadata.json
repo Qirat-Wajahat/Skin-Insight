@@ -1,0 +1,70 @@
+{
+  "source_root": "W:\\uni projects\\Big Data & Data Mining\\Skin Insights\\Skin-Insight\\datasets\\skinIssues",
+  "test_ratio": 0.2,
+  "seed": 42,
+  "mode": "hardlink",
+  "class_names": [
+    "Acne",
+    "Blackheads",
+    "Combination",
+    "Dark Circles",
+    "Dark Spots",
+    "Dry",
+    "Normal",
+    "Oily",
+    "Pores",
+    "Wrinkles"
+  ],
+  "counts": {
+    "Acne": {
+      "train": 1648,
+      "test": 412,
+      "total": 2060
+    },
+    "Blackheads": {
+      "train": 1576,
+      "test": 394,
+      "total": 1970
+    },
+    "Combination": {
+      "train": 273,
+      "test": 68,
+      "total": 341
+    },
+    "Dark Circles": {
+      "train": 0,
+      "test": 0,
+      "total": 0
+    },
+    "Dark Spots": {
+      "train": 1701,
+      "test": 425,
+      "total": 2126
+    },
+    "Dry": {
+      "train": 962,
+      "test": 241,
+      "total": 1203
+    },
+    "Normal": {
+      "train": 1119,
+      "test": 280,
+      "total": 1399
+    },
+    "Oily": {
+      "train": 920,
+      "test": 230,
+      "total": 1150
+    },
+    "Pores": {
+      "train": 1306,
+      "test": 326,
+      "total": 1632
+    },
+    "Wrinkles": {
+      "train": 1586,
+      "test": 396,
+      "total": 1982
+    }
+  }
+}

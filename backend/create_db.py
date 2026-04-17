@@ -10,12 +10,33 @@ Run once before starting the Flask server:
 
 import sqlite3
 import os
+import json
 
 # Path to the SQLite database file
 DB_PATH = os.path.join(os.path.dirname(__file__), "database.db")
 
-# Path to the products CSV (used to seed the products table)
+# Path to the products JSON (used to seed the products table)
+PRODUCTS_JSON = os.path.join(os.path.dirname(__file__), "..", "datasets", "products.json")
+# Legacy fallback (no longer required)
 PRODUCTS_CSV = os.path.join(os.path.dirname(__file__), "..", "datasets", "products.csv")
+
+
+def _canonical_skin_problem(key: str) -> str:
+    k = str(key).strip().lower()
+    mapping = {
+        "acne": "Acne",
+        "blackheads": "Blackheads",
+        "blackheades": "Blackheads",
+        "combination": "Combination",
+        "dark_spots": "Dark Spots",
+        "dark spots": "Dark Spots",
+        "dry": "Dry",
+        "normal": "Normal",
+        "oily": "Oily",
+        "pores": "Pores",
+        "wrinkles": "Wrinkles",
+    }
+    return mapping.get(k, key)
 
 
 def get_connection():
@@ -116,18 +137,56 @@ def seed_products(conn: sqlite3.Connection) -> None:
         print(f"Products table already has {count} rows — skipping seed.")
         return
 
-    import csv
+    rows = []
 
-    if not os.path.exists(PRODUCTS_CSV):
-        print(f"Warning: products.csv not found at {PRODUCTS_CSV}. Skipping seed.")
+    # Prefer products.json, else fall back to legacy products.csv.
+    if os.path.exists(PRODUCTS_JSON):
+        data = json.loads(open(PRODUCTS_JSON, "r", encoding="utf-8").read())
+        if not isinstance(data, dict):
+            print(f"Warning: products.json has unexpected format at {PRODUCTS_JSON}. Skipping seed.")
+            return
+
+        for skin_key, products in data.items():
+            associated = _canonical_skin_problem(skin_key)
+            if not isinstance(products, list):
+                continue
+            for p in products:
+                if not isinstance(p, dict):
+                    continue
+                name = p.get("product_name")
+                brand = p.get("brand")
+                price = p.get("price_in_rs")
+                if name and brand and price is not None:
+                    try:
+                        rows.append((str(name), str(brand), float(price), str(associated)))
+                    except Exception:
+                        continue
+
+    elif os.path.exists(PRODUCTS_CSV):
+        import csv
+
+        with open(PRODUCTS_CSV, newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            rows = [
+                (
+                    row["product_name"],
+                    row["brand"],
+                    float(row["price"]),
+                    row["associated_skin_problem"],
+                )
+                for row in reader
+            ]
+
+    else:
+        print(
+            f"Warning: neither products.json ({PRODUCTS_JSON}) nor products.csv ({PRODUCTS_CSV}) found. "
+            "Skipping seed."
+        )
         return
 
-    with open(PRODUCTS_CSV, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        rows = [
-            (row["product_name"], row["brand"], float(row["price"]), row["associated_skin_problem"])
-            for row in reader
-        ]
+    if not rows:
+        print("Warning: no products found to seed. Skipping seed.")
+        return
 
     cursor.executemany(
         "INSERT INTO products (product_name, brand, price, associated_skin_problem) VALUES (?, ?, ?, ?)",

@@ -1,0 +1,349 @@
+{
+  "acne": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Tea Tree Acne Control Gel",
+      "price_in_rs": 1200
+    },
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Salicylic Acid Face Wash",
+      "price_in_rs": 1350
+    },
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Acne Spot Corrector",
+      "price_in_rs": 1100
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Acne Control Face Wash",
+      "price_in_rs": 1450
+    },
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Tea Tree & Neem Cleanser",
+      "price_in_rs": 1500
+    },
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Acne Defense Gel",
+      "price_in_rs": 1600
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Acne Foaming Cleanser",
+      "price_in_rs": 3200
+    },
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe SA Smoothing Cleanser",
+      "price_in_rs": 3400
+    },
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Acne Control Gel",
+      "price_in_rs": 3600
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Acne Clear Solution",
+      "price_in_rs": 1800
+    },
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Tea Tree Face Wash",
+      "price_in_rs": 1700
+    }
+  ],
+
+  "blackheads": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Charcoal Blackhead Mask",
+      "price_in_rs": 1400
+    },
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Activated Charcoal Cleanser",
+      "price_in_rs": 1500
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Blackhead Removal Mask",
+      "price_in_rs": 1650
+    },
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Charcoal Detox Face Wash",
+      "price_in_rs": 1550
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Renewing SA Cleanser",
+      "price_in_rs": 3600
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Charcoal Purifying Mask",
+      "price_in_rs": 1900
+    }
+  ],
+
+  "dark_spots": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Vitamin C Brightening Serum",
+      "price_in_rs": 1700
+    },
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Skin Repair Night Cream",
+      "price_in_rs": 1800
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Vitamin C + Hyaluronic Acid Serum",
+      "price_in_rs": 2000
+    },
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Dark Spot Correcting Cream",
+      "price_in_rs": 2100
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Skin Renewing Retinol Serum",
+      "price_in_rs": 4200
+    },
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Vitamin C Serum",
+      "price_in_rs": 3900
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Brightening Serum",
+      "price_in_rs": 2200
+    }
+  ],
+
+  "pores": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Pore Minimizing Toner",
+      "price_in_rs": 1500
+    },
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Clay Mask for Open Pores",
+      "price_in_rs": 1600
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Pore Tightening Toner",
+      "price_in_rs": 1700
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Foaming Facial Cleanser",
+      "price_in_rs": 3300
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Pore Refining Serum",
+      "price_in_rs": 2100
+    }
+  ],
+
+  "wrinkles": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Anti Aging Night Cream",
+      "price_in_rs": 1900
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Anti Wrinkle Serum",
+      "price_in_rs": 2200
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Skin Renewing Night Cream",
+      "price_in_rs": 4500
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Anti Aging Firming Cream",
+      "price_in_rs": 2500
+    }
+  ],
+
+  "dry": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Deep Moisturizing Cream",
+      "price_in_rs": 1600
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Hydrating Moisturizer",
+      "price_in_rs": 1800
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Moisturizing Cream",
+      "price_in_rs": 4200
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Intensive Moisture Lotion",
+      "price_in_rs": 2100
+    }
+  ],
+
+  "oily": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Oil Control Face Wash",
+      "price_in_rs": 1450
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Oil Control Cleanser",
+      "price_in_rs": 1650
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Foaming Facial Cleanser for Oily Skin",
+      "price_in_rs": 3300
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Oil Balance Face Gel",
+      "price_in_rs": 2000
+    }
+  ],
+
+  "normal": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Daily Refresh Face Wash",
+      "price_in_rs": 1300
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Gentle Cleanser",
+      "price_in_rs": 1500
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Daily Moisturizing Lotion",
+      "price_in_rs": 3800
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Daily Skin Care Cream",
+      "price_in_rs": 1900
+    }
+  ],
+
+  "combination": [
+    {
+      "brand": "BNB",
+      "brand_category": "local_budget",
+      "product_name": "BNB Balancing Face Wash",
+      "price_in_rs": 1500
+    },
+
+    {
+      "brand": "Vince",
+      "brand_category": "mid_range_pakistani",
+      "product_name": "Vince Combination Skin Cleanser",
+      "price_in_rs": 1700
+    },
+
+    {
+      "brand": "CeraVe",
+      "brand_category": "international_dermatologist_grade",
+      "product_name": "CeraVe Hydrating Foaming Cleanser",
+      "price_in_rs": 3600
+    },
+
+    {
+      "brand": "Jensens",
+      "brand_category": "mid_high_range",
+      "product_name": "Jensens Combination Skin Cream",
+      "price_in_rs": 2100
+    }
+  ]
+}

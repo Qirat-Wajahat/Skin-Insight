@@ -10,8 +10,11 @@ Skin Insight uses a Convolutional Neural Network (CNN) to detect skin conditions
 |---------------|------------------------------------------|
 | Acne          | Pimples, cysts, inflamed skin            |
 | Blackheads    | Clogged pores with dark appearance       |
+| Combination   | Dry + oily areas (mixed skin)            |
 | Dark Spots    | Hyperpigmentation, uneven skin tone      |
+| Dry           | Flaky, tight, dehydrated skin            |
 | Normal        | Healthy, well-balanced skin              |
+| Oily          | Excess sebum / shine                     |
 | Pores         | Enlarged / visible pores                 |
 | Wrinkles      | Fine lines and signs of ageing           |
 
@@ -34,11 +37,14 @@ SkinInsight/
 │   ├── style.css         # Professional styling + dark mode
 │   └── script.js         # Camera capture, API calls, result rendering
 ├── datasets/
+│   ├── skinIssues/       # Raw dataset (one sub-folder per class)
 │   ├── train/            # Training images (one sub-folder per class)
 │   ├── test/             # Test images (one sub-folder per class)
-│   └── products.csv      # Product catalogue
+│   ├── class_names.json  # Canonical class order (generated)
+│   └── products.json     # Product catalogue
 ├── images/               # Uploaded images (created at runtime)
 ├── scripts/
+│   ├── prepare_dataset.py# Builds train/test from datasets/skinIssues
 │   ├── preprocess.py     # Dataset preprocessing script
 │   ├── train_model.py    # CNN training script
 │   └── test_pipeline.py  # End-to-end pipeline tests
@@ -79,19 +85,48 @@ pip install -r requirements.txt
 python backend/create_db.py
 ```
 
-This creates `backend/database.db` and seeds it with sample products from `datasets/products.csv`.
+This creates `backend/database.db` and seeds it with sample products from `datasets/products.json`.
 
 ### 5. Prepare Your Dataset
 
-Place training images into sub-folders named after each skin class:
+If your images are already arranged like this repo (recommended), put them under:
+
+```
+datasets/
+└── skinIssues/
+     ├── acne/
+     ├── blackheades/   # dataset folder typo is handled
+     ├── combination/
+     ├── dark spots/
+     ├── dry/
+     ├── normal/
+     ├── oily/
+     ├── pores/
+     └── wrinkles/
+```
+
+Then generate the `datasets/train` and `datasets/test` folders:
+
+```bash
+python scripts/prepare_dataset.py
+```
+
+This will also write `datasets/class_names.json`, which ensures the model’s class
+index mapping stays consistent between training and inference.
+
+Alternatively, you can place images directly into `datasets/train` and `datasets/test`
+with one sub-folder per class:
 
 ```
 datasets/
 ├── train/
-│   ├── Acne/          ← JPEG/PNG images of acne skin
+│   ├── Acne/
 │   ├── Blackheads/
+│   ├── Combination/
 │   ├── Dark Spots/
+│   ├── Dry/
 │   ├── Normal/
+│   ├── Oily/
 │   ├── Pores/
 │   └── Wrinkles/
 └── test/

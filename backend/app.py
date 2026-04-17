@@ -19,6 +19,7 @@ import os
 import sqlite3
 import uuid
 import csv
+import json
 from datetime import datetime
 
 from flask import Flask, request, jsonify
@@ -38,8 +39,31 @@ os.makedirs(IMAGES_DIR, exist_ok=True)
 # Path to the SQLite database
 DB_PATH = os.path.join(os.path.dirname(__file__), "database.db")
 
-# Path to the products CSV used for recommendations
+# Path to the products JSON used for recommendations
+PRODUCTS_JSON = os.path.join(os.path.dirname(__file__), "..", "datasets", "products.json")
+# Legacy fallback (no longer required)
 PRODUCTS_CSV = os.path.join(os.path.dirname(__file__), "..", "datasets", "products.csv")
+
+
+def _normalize_skin_problem_key(s: str) -> str:
+    return "_".join(s.strip().lower().split())
+
+
+def _canonical_skin_problem_label(key: str) -> str:
+    k = _normalize_skin_problem_key(key)
+    mapping = {
+        "acne": "Acne",
+        "blackheads": "Blackheads",
+        "blackheades": "Blackheads",
+        "combination": "Combination",
+        "dark_spots": "Dark Spots",
+        "dry": "Dry",
+        "normal": "Normal",
+        "oily": "Oily",
+        "pores": "Pores",
+        "wrinkles": "Wrinkles",
+    }
+    return mapping.get(k, key)
 
 
 # ── Database Helper ────────────────────────────────────────────────────────────
@@ -244,7 +268,7 @@ def recommend():
     Query Parameters
     ----------------
     skin_problem : str
-        One of: Acne, Blackheads, Dark Spots, Normal, Pores, Wrinkles.
+        One of: Acne, Blackheads, Combination, Dark Spots, Dry, Normal, Oily, Pores, Wrinkles.
     image_id : int (optional)
         If provided, saves the recommendations to the DB.
 
@@ -258,21 +282,39 @@ def recommend():
     if not skin_problem:
         return jsonify({"error": "skin_problem query parameter is required."}), 400
 
-    # Read products from CSV
-    if not os.path.exists(PRODUCTS_CSV):
+    recommended = []
+
+    if not os.path.exists(PRODUCTS_JSON):
         return jsonify({"error": "Products database not found."}), 503
 
-    recommended = []
-    with open(PRODUCTS_CSV, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row["associated_skin_problem"].strip().lower() == skin_problem.lower():
-                recommended.append({
-                    "product_name": row["product_name"],
-                    "brand": row["brand"],
-                    "price": float(row["price"]),
-                    "associated_skin_problem": row["associated_skin_problem"],
-                })
+    try:
+        with open(PRODUCTS_JSON, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return jsonify({"error": "Invalid products.json format."}), 503
+
+        key = _normalize_skin_problem_key(skin_problem)
+        products = data.get(key) or data.get(key.replace("_", " "))
+        if isinstance(products, list):
+            associated_label = _canonical_skin_problem_label(key)
+            for p in products:
+                if not isinstance(p, dict):
+                    continue
+                name = p.get("product_name")
+                brand = p.get("brand")
+                price = p.get("price_in_rs")
+                if name and brand and price is not None:
+                    recommended.append(
+                        {
+                            "product_name": str(name),
+                            "brand": str(brand),
+                            "price": float(price),
+                            "associated_skin_problem": associated_label,
+                        }
+                    )
+
+    except Exception:
+        return jsonify({"error": "Unable to read products.json."}), 503
 
     total_price = sum(p["price"] for p in recommended)
 

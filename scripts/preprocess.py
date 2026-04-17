@@ -1,24 +1,20 @@
-"""
-preprocess.py
+"""preprocess.py
 -------------
 Loads images from datasets/train/ and datasets/test/, resizes them to 224x224,
 normalizes pixel values to [0, 1], and prepares batched datasets for model training.
 
-Expected directory structure:
-    datasets/
-        train/
-            Acne/
-            Wrinkles/
-            Blackheads/
-            Dark Spots/
-            Pores/
-            Normal/
-        test/
-            Acne/
-            ...
+This project generates train/test folders from the raw dataset in
+`datasets/skinIssues/` via:
+
+    python scripts/prepare_dataset.py
+
+That script also writes `datasets/class_names.json` so we can enforce a stable
+class order during training.
 """
 
+import json
 import os
+from pathlib import Path
 import tensorflow as tf
 
 # ── Configuration ─────────────────────────────────────────────────────────────
@@ -29,9 +25,29 @@ SEED = 42                 # Random seed for reproducibility
 # Paths relative to the project root (run this script from project root)
 TRAIN_DIR = os.path.join("datasets", "train")
 TEST_DIR = os.path.join("datasets", "test")
+CLASS_NAMES_PATH = os.path.join("datasets", "class_names.json")
 
 
-def load_dataset(directory: str, subset: str | None = None, validation_split: float = 0.0):
+def load_class_names() -> list[str] | None:
+    """Load the canonical class order, if available."""
+    path = Path(CLASS_NAMES_PATH)
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(data, list) and all(isinstance(x, str) for x in data):
+            return data
+    except Exception:
+        return None
+    return None
+
+
+def load_dataset(
+    directory: str,
+    subset: str | None = None,
+    validation_split: float = 0.0,
+    class_names: list[str] | None = None,
+):
     """
     Load images from *directory* and return a batched tf.data.Dataset.
 
@@ -64,6 +80,9 @@ def load_dataset(directory: str, subset: str | None = None, validation_split: fl
         kwargs["validation_split"] = validation_split
         kwargs["subset"] = subset
 
+    if class_names:
+        kwargs["class_names"] = class_names
+
     dataset = tf.keras.utils.image_dataset_from_directory(**kwargs)
 
     # Normalize pixel values from [0, 255] → [0, 1]
@@ -90,14 +109,28 @@ def get_datasets():
     tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]
         (train_ds, val_ds, test_ds)
     """
+    class_names = load_class_names()
+    if class_names:
+        print(f"Using class order from {CLASS_NAMES_PATH}: {class_names}")
+
     print("Loading training dataset …")
-    train_ds = load_dataset(TRAIN_DIR, subset="training", validation_split=0.2)
+    train_ds = load_dataset(
+        TRAIN_DIR,
+        subset="training",
+        validation_split=0.2,
+        class_names=class_names,
+    )
 
     print("Loading validation dataset …")
-    val_ds = load_dataset(TRAIN_DIR, subset="validation", validation_split=0.2)
+    val_ds = load_dataset(
+        TRAIN_DIR,
+        subset="validation",
+        validation_split=0.2,
+        class_names=class_names,
+    )
 
     print("Loading test dataset …")
-    test_ds = load_dataset(TEST_DIR)
+    test_ds = load_dataset(TEST_DIR, class_names=class_names)
 
     # Report class names inferred from sub-folder names
     print(f"Class names: {train_ds.class_names}")
